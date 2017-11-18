@@ -57,6 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# Apple
+.DS_Stores
+
 # Site Specific
 /.vscode/*
 *.lock

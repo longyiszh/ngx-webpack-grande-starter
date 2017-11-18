@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('./helpers');
 
 module.exports = {
@@ -19,16 +20,13 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
         use: [
           {
-            loader: 'awesome-typescript-loader',
+            loader: '@ngtools/webpack',
             options: {
-              configFileName: root('src', 'client', 'tsconfig.client.json')
+              sourceMap: true
             }
-          },
-          {
-            loader: 'angular2-template-loader'
           }
         ]
       },
@@ -49,6 +47,11 @@ module.exports = {
         test: /\.css$/,
         include: root('src', 'client', 'app'),
         use: ['raw-loader']
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['raw-loader', 'sass-loader']
       }
     ]
   },
@@ -65,6 +68,11 @@ module.exports = {
 
     new webpack.optimize.CommonsChunkPlugin({
       name: ['app', 'vendor', 'polyfills']
+    }),
+
+    new AngularCompilerPlugin({
+      tsConfigPath: root('src', 'client', 'tsconfig.client.json'),
+      entryModule: root('src', 'client', 'app', 'app.module#AppModule')
     }),
 
     new HtmlWebpackPlugin({
