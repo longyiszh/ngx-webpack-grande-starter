@@ -4,13 +4,19 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('./helpers');
 
+const appPath = root('src', 'client', 'app');
+const globalscss = [
+  root('src', 'client', 'styles.scss')
+];
+
 module.exports = {
   entry: {
     'polyfills': root('src', 'client', 'polyfills.ts'),
     'vendor': root('src', 'client', 'vendor.ts'),
     'app': [
       root('src', 'client', 'main.ts')
-    ]
+    ],
+    'styles': root('src', 'client', 'styles.ts')
   },
 
   resolve: {
@@ -49,9 +55,26 @@ module.exports = {
         use: ['raw-loader']
       },
       {
+        /* Scoped scss */
         test: /\.scss$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, globalscss], // exclude scoped styles
         loaders: ['raw-loader', 'sass-loader']
+      },
+      {
+        /* Global scss */
+        test: /\.scss$/,
+        exclude: appPath, // exclude scoped styles
+        use: [
+          {
+            loader: "style-loader" // global styles needs to get injected as link to css
+          },
+          {
+            loader: "css-loader?sourceMap" // translates CSS into CommonJS
+          },
+          {
+            loader: "sass-loader" // compiles Sass to CSS
+          }
+        ]
       }
     ]
   },
