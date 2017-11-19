@@ -58,23 +58,13 @@ module.exports = {
         /* Scoped scss */
         test: /\.scss$/,
         exclude: [/node_modules/, globalscss], // exclude scoped styles
-        loaders: ['raw-loader', 'sass-loader']
+        use: ['raw-loader', 'sass-loader']
       },
       {
         /* Global scss */
         test: /\.scss$/,
         exclude: appPath, // exclude scoped styles
-        use: [
-          {
-            loader: "style-loader" // global styles needs to get injected as link to css
-          },
-          {
-            loader: "css-loader?sourceMap" // translates CSS into CommonJS
-          },
-          {
-            loader: "sass-loader" // compiles Sass to CSS
-          }
-        ]
+        use: ["style-loader", "css-loader?sourceMap", "sass-loader"]
       }
     ]
   },
