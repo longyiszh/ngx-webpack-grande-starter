@@ -44,18 +44,6 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
         use: 'file-loader?name=assets/[name].[hash].[ext]'
       },
-      /* Global css */
-      {
-        test: /\.css$/,
-        include: globalcss,
-        use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader?sourceMap' })
-      },
-      /* Scoped css */
-      {
-        test: /\.css$/,
-        include: root('src', 'client', 'app'),
-        use: ['raw-loader']
-      },
       {
         /* Scoped scss */
         test: /\.scss$/,
@@ -66,7 +54,12 @@ module.exports = {
         /* Global scss */
         test: /\.scss$/,
         exclude: appPath, // exclude scoped styles
-        use: ["style-loader", "css-loader?sourceMap", "sass-loader"]
+        use: ExtractTextPlugin.extract(
+          {
+            fallback: 'style-loader',
+            use: ['css-loader?sourceMap', "sass-loader"]
+          }
+        )
       }
     ]
   },
