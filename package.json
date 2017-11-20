@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A simple webpack starter for Angular2+",
   "scripts": {
-    "serve": "webpack-dev-server --hot --inline --progress --port 4199",
+    "serve": "webpack-dev-server --hot --inline --progress",
     "test": "karma start",
     "build": "webpack --config config/webpack.prod.js --progress --profile --bail"
   },

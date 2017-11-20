@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent { 
-  title: string = " ngx-webpack-simple-starter works! "
+  title: string = " ngx-webpack-simple-starter works! ";
 }
