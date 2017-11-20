@@ -22,7 +22,8 @@
     "zone.js": "^0.8.17"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "^5.0.2",
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
     "@ngtools/webpack": "^1.8.2",
     "@types/jasmine": "^2.6.0",
     "@types/node": "^8.0.28",
