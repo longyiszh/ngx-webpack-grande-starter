@@ -4,6 +4,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('./helpers');
 
+const globalcss = [
+  root('src', 'client', 'styles.css')
+]
+
 module.exports = {
   entry: {
     'polyfills': root('src', 'client', 'polyfills.ts'),
@@ -38,11 +42,13 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
         use: 'file-loader?name=assets/[name].[hash].[ext]'
       },
+      /* Global css */
       {
         test: /\.css$/,
-        exclude: root('src', 'client', 'app'),
+        include: globalcss,
         use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader?sourceMap' })
       },
+      /* Scoped css */
       {
         test: /\.css$/,
         include: root('src', 'client', 'app'),
