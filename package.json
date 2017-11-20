@@ -1,5 +1,5 @@
 {
-  "name": "ngx-webpack-simple-starter",
+  "name": "ngx-webpack-simple-starter-sass",
   "version": "1.0.0",
   "description": "A simple webpack starter for Angular2+",
   "scripts": {
@@ -21,6 +21,7 @@
     "zone.js": "^0.8.17"
   },
   "devDependencies": {
+    "@angular/compiler": "^5.0.2",
     "@angular/compiler-cli": "^5.0.2",
     "@ngtools/webpack": "^1.8.2",
     "@types/jasmine": "^2.6.0",
