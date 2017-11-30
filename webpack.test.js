@@ -1,5 +1,6 @@
 const webpack = require('webpack');
-const helpers = require('./config/helpers');
+const { root } = require('./config/helpers');
+const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -11,12 +12,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        loaders: [
+        test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+        use: [
           {
-            use: 'awesome-typescript-loader',
-            options: { configFileName: helpers.root('src', 'tsconfig.json') }
-          } , 'angular2-template-loader'
+            loader: '@ngtools/webpack',
+            options: {
+              sourceMap: true
+            }
+          }
         ]
       },
       {
@@ -30,12 +33,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: helpers.root('src', 'app'),
+        exclude: root('src', 'app'),
         use: 'null-loader'
       },
       {
         test: /\.css$/,
-        include: helpers.root('src', 'app'),
+        include: root('src', 'app'),
         use: 'raw-loader'
       }
     ]
@@ -45,8 +48,13 @@ module.exports = {
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)@angular/,
-      helpers.root('./src'), // location of your src
+      root('./src/client'), // location of your src
       {} // a map of your routes
-    )
+    ),
+    new AngularCompilerPlugin({
+      tsConfigPath: root('src', 'client', 'tsconfig.client.json'),
+      skipCodeGeneration: true, // workaround for issue @angular/angular-cli#8626
+      entryModule: root('src', 'client', 'app', 'app.module#AppModule')
+    })
   ]
 }
