@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('../lib/helpers');
+require('babel-polyfill');
 
 const globalscss = [
   root('src/client/styles.scss')
@@ -13,6 +14,7 @@ let config = {
     'polyfills': root('src/client/polyfills.ts'),
     'vendor': root('src/client/vendor.ts'),
     'app': [
+      'babel-polyfill',
       root('src/client/main.ts')
     ]
   },
@@ -52,17 +54,17 @@ let config = {
       {
         /* Scoped scss */
         test: /\.scss$/,
-        exclude: [/node_modules/, globalscss], // exclude scoped styles
-        use: ['raw-loader', 'sass-loader']
+        include: root('src/client/app'),
+        use: ['raw-loader', 'postcss-loader', 'sass-loader']
       },
       {
         /* Global scss */
         test: /\.scss$/,
-        exclude: appPath, // exclude scoped styles
+        include: globalscss,
         use: ExtractTextPlugin.extract(
           {
             fallback: 'style-loader',
-            use: ['css-loader?sourceMap', "sass-loader"]
+            use: ['css-loader?sourceMap', 'postcss-loader', "sass-loader"]
           }
         )
       }

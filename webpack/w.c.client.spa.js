@@ -41,13 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 
   config.plugins = (config.plugins || []).concat([
 
-    new CleanWebpackPlugin([root('dist')], {root: root(), verbose: false}),
-
-    // new webpack.optimize.UglifyJsPlugin({ // https://github.com/angular/angular/issues/10618
-    //   mangle: {
-    //     keep_fnames: true
-    //   }
-    // })
+    new CleanWebpackPlugin([root('dist')], {root: root(), verbose: false})
 
   ]);
 }

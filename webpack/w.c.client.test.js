@@ -39,12 +39,12 @@ module.exports = {
         use: 'null-loader'
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         exclude: root('src/app'),
         use: 'null-loader'
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         include: root('src/app'),
         use: 'raw-loader'
       }
