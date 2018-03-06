@@ -1,6 +1,7 @@
 const webpack = require('webpack');
-const { root } = require('./config/helpers');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
+
+const { root } = require('../lib/helpers');
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -24,8 +25,14 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: 'html-loader'
-
+        use: [
+          {
+            loader: 'html-loader',
+            options: {
+              minimize: false // workaround for ng2
+            }
+          }
+        ]
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
@@ -33,12 +40,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: root('src', 'app'),
+        exclude: root('src/app'),
         use: 'null-loader'
       },
       {
         test: /\.css$/,
-        include: root('src', 'app'),
+        include: root('src/app'),
         use: 'raw-loader'
       }
     ]
@@ -52,9 +59,10 @@ module.exports = {
       {} // a map of your routes
     ),
     new AngularCompilerPlugin({
-      tsConfigPath: root('src', 'client', 'tsconfig.spec.json'),
+      tsConfigPath: root('src/client/tsconfig.client.json'),
       skipCodeGeneration: true, // workaround for issue @angular/angular-cli#8626
-      entryModule: root('src', 'client', 'app', 'app.module#AppModule')
+      entryModule: root('src/client/app/app.module#AppModule')
     })
+
   ]
 }

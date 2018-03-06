@@ -2,18 +2,18 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
-const { root } = require('./helpers');
+const { root } = require('../lib/helpers');
 
 const globalcss = [
-  root('src', 'client', 'styles.css')
+  root('src/client/styles.css')
 ]
 
-module.exports = {
+let config = {
   entry: {
-    'polyfills': root('src', 'client', 'polyfills.ts'),
-    'vendor': root('src', 'client', 'vendor.ts'),
+    'polyfills': root('src/client/polyfills.ts'),
+    'vendor': root('src/client/vendor.ts'),
     'app': [
-      root('src', 'client', 'main.ts')
+      root('src/client/main.ts')
     ]
   },
 
@@ -35,12 +35,19 @@ module.exports = {
         ]
       },
       {
-        test: /\.html$/,
-        use: ['html-loader']
-      },
-      {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
         use: 'file-loader?name=assets/[name].[hash].[ext]'
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            options: {
+              minimize: false // workaround for ng2
+            }
+          }
+        ]
       },
       /* Global css */
       {
@@ -51,10 +58,38 @@ module.exports = {
       /* Scoped css */
       {
         test: /\.css$/,
-        include: root('src', 'client', 'app'),
+        include: root('src/client/app'),
         use: ['raw-loader']
       }
     ]
+  },
+
+  devServer: {
+    historyApiFallback: true,
+    stats: 'minimal',
+    port: 4199,
+    overlay: {
+      errors: true,
+      warnings: false
+    }
+  },
+
+  optimization: {
+    runtimeChunk: true,
+    splitChunks: {
+      name: true,
+      cacheGroups: {
+        app: {
+          name: "app"
+        },
+        vendor: {
+          name: "vendor"
+        },
+        polyfills: {
+          name: "polyfills"
+        },
+      }
+    }
   },
 
   plugins: [
@@ -63,21 +98,27 @@ module.exports = {
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)@angular/,
-      root('src', 'client'), 
+      root('src/client'), 
       {} // a map of your routes
     ),
 
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills']
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: ['app', 'vendor', 'polyfills']
+    // }),
 
     new AngularCompilerPlugin({
-      tsConfigPath: root('src', 'client', 'tsconfig.client.json'),
-      entryModule: root('src', 'client', 'app', 'app.module#AppModule')
+      tsConfigPath: root('src/client/tsconfig.client.json'),
+      entryModule: root('src/client/app/app.module#AppModule')
     }),
 
     new HtmlWebpackPlugin({
-      template: root('src', 'client', 'index.html')
-    })
+      template: root('src/client/index.html')
+    }),
+
+    new ExtractTextPlugin('styles.[hash].css')
   ]
+
+  
 };
+
+module.exports = config;
