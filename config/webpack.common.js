@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
-const { root } = require('./helpers');
+const { root } = require('../lib/helpers');
 
 const appPath = root('src', 'client', 'app');
 const globalscss = [
