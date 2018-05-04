@@ -3,8 +3,10 @@
   "version": "2.0.0",
   "description": "A simple webpack starter for Angular 2+",
   "scripts": {
-    "serve": "cross-env NODE_ENV=development webpack-dev-server --config webpack/w.c.client.spa --hot --inline --progress",
-    "build": "cross-env NODE_ENV=production webpack --config webpack/w.c.client.spa --progress --profile --bail"
+    "serve": "npm run serve:c",
+    "serve:c": "cross-env NODE_ENV=development webpack-dev-server --config webpack/w.c.client.spa --hot --inline --progress",
+    "build": "npm run build:c",
+    "build:c": "cross-env NODE_ENV=production webpack --config webpack/w.c.client.spa --progress --profile --bail"
   },
   "license": "MIT",
   "dependencies": {
