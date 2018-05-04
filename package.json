@@ -9,7 +9,8 @@
     "build:c": "cross-env NODE_ENV=production webpack --config webpack/w.c.client.spa --progress --profile --bail",
     "test": "npm run test:c",
     "test:c": "jest --config jest/j.c.client.js",
-    "test:c-w": "jest --config jest/j.c.client.js --watch"
+    "test:c-w": "jest --config jest/j.c.client.js --watch",
+    "test:c-c": "jest --config jest/j.c.client.js --coverage"
   },
   "license": "MIT",
   "dependencies": {

@@ -5,7 +5,8 @@ const config = {
   globals: {
     "ts-jest": {
       tsConfigFile: "./src/client/tsconfig.test.json"
-    }
+    },
+    __TRANSFORM_HTML__: true
   }
 }
 
