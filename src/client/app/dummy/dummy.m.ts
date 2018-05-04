@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // componets
-import { DummyComponent } from './dummy.component';
-import { DummyDirective } from './dummy.directive';
+import { DummyComponent } from './dummy.c';
+import { DummyDirective } from './dummy.dr';
 
 @NgModule({
   imports: [
