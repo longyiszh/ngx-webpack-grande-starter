@@ -2,8 +2,8 @@
   "baseUrl": "src/client",
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    "target": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
     "lib": [
       "dom",
@@ -16,10 +16,6 @@
     "sourceMap": true
   },
   "include": [
-    "src/client"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
+    "./tests"
   ]
 }
