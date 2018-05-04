@@ -10,7 +10,6 @@ const globalscss = [
   root('src/client/styles.scss')
 ];
 
-
 let config = {
   entry: {
     'polyfills': root('src/client/polyfills.ts'),
