@@ -1,13 +1,24 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "experimentalDecorators": true,
-    "lib": ["es2015", "dom"],
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true
-  }
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "sourceMap": true
+  },
+  "include": [
+    "./*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

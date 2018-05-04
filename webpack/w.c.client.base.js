@@ -1,13 +1,15 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('../lib/helpers');
 require('babel-polyfill');
+const devMode = process.env.NODE_ENV !== 'production';
 
 const globalscss = [
   root('src/client/styles.scss')
 ];
+
 
 let config = {
   entry: {
@@ -61,12 +63,12 @@ let config = {
         /* Global scss */
         test: /\.scss$/,
         include: globalscss,
-        use: ExtractTextPlugin.extract(
-          {
-            fallback: 'style-loader',
-            use: ['css-loader?sourceMap', 'postcss-loader', "sass-loader"]
-          }
-        )
+        use: [
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader?sourceMap',
+          'postcss-loader',
+          "sass-loader"
+        ]
       }
     ]
   },
@@ -118,10 +120,16 @@ let config = {
       template: root('src/client/index.html')
     }),
 
-    new ExtractTextPlugin('styles.[hash].css')
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: devMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+    })
+
   ]
 
-  
+ 
 };
 
 module.exports = config;
