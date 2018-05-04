@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('../lib/helpers');
-require('babel-polyfill');
+
 const devMode = process.env.NODE_ENV !== 'production';
 
 const globalscss = [
@@ -15,7 +15,6 @@ let config = {
     'polyfills': root('src/client/polyfills.ts'),
     'vendor': root('src/client/vendor.ts'),
     'app': [
-      'babel-polyfill',
       root('src/client/main.ts')
     ]
   },
