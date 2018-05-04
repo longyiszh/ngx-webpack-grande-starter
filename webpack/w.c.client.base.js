@@ -1,8 +1,10 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('../lib/helpers');
+
+const devMode = process.env.NODE_ENV !== 'production';
 
 const globalcss = [
   root('src/client/styles.css')
@@ -53,7 +55,10 @@ let config = {
       {
         test: /\.css$/,
         include: globalcss,
-        use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader?sourceMap' })
+        use: [
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
       },
       /* Scoped css */
       {
@@ -102,10 +107,6 @@ let config = {
       {} // a map of your routes
     ),
 
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ['app', 'vendor', 'polyfills']
-    // }),
-
     new AngularCompilerPlugin({
       tsConfigPath: root('src/client/tsconfig.client.json'),
       entryModule: root('src/client/app/app.module#AppModule')
@@ -115,10 +116,16 @@ let config = {
       template: root('src/client/index.html')
     }),
 
-    new ExtractTextPlugin('styles.[hash].css')
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: devMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+    })
+
   ]
 
-  
+ 
 };
 
 module.exports = config;
