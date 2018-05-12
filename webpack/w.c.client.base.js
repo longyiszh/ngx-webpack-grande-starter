@@ -1,21 +1,22 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const scriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { root } = require('../lib/helpers');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
 const globalscss = [
-  root('src/client/styles.scss')
+  root('src/styles.scss')
 ];
 
 let config = {
   entry: {
-    'polyfills': root('src/client/polyfills.ts'),
-    'vendor': root('src/client/vendor.ts'),
+    'polyfills': root('src/polyfills.ts'),
+    'vendor': root('src/vendor.ts'),
     'app': [
-      root('src/client/main.ts')
+      root('src/main.ts')
     ]
   },
 
@@ -34,7 +35,8 @@ let config = {
               sourceMap: true
             }
           }
-        ]
+        ],
+        exclude: [/\.(spec|e2e)\.ts$/]
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
@@ -46,7 +48,7 @@ let config = {
           {
             loader: 'html-loader',
             options: {
-              minimize: false // workaround for ng2
+              // minimize: false // workaround for ng2
             }
           }
         ]
@@ -54,7 +56,7 @@ let config = {
       {
         /* Scoped scss */
         test: /\.scss$/,
-        include: root('src/client/app'),
+        include: root('src/app'),
         use: ['raw-loader', 'postcss-loader', 'sass-loader']
       },
       {
@@ -105,17 +107,22 @@ let config = {
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)@angular/,
-      root('src/client'), 
+      root('src'), 
       {} // a map of your routes
     ),
 
     new AngularCompilerPlugin({
-      tsConfigPath: root('src/client/tsconfig.client.json'),
-      entryModule: root('src/client/app/app.module#AppModule')
+      tsConfigPath: root('tsconfig.json'),
+      entryModule: root('src/app/app.module#AppModule'),
+      skipCodeGeneration: true
     }),
 
     new HtmlWebpackPlugin({
-      template: root('src/client/index.html')
+      template: root('src/index.html')
+    }),
+
+    new scriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer'
     }),
 
     new MiniCssExtractPlugin({
